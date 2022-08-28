@@ -1,0 +1,66 @@
+Python assignment:
+
+Write a program in any language of your choice (C, Java, SQL Stored Procedure, Unix Shell Programming, Python).  Focus on getting the logic accurate rather than 100% technically correct syntax, as evaluation is more on your ability to logically design the construct.
+The problem Statement
+The program takes input a short abstract and outputs the following
+•	prints each word in reverse.  
+•	prints Top 2 occurring words in sorted order. The words that have occurred most of the time.
+Sample Input:
+"This declaration represents a political commitment among declaration partners to advance a positive vision for the Internet in this era of a united europe"
+Sample Output: Printing word in reverse
+“Europe of century 21st of era this in Internet the for vision positive a advance to partners declaration among commitment political a represents declaration this”
+Sample Output: Occurrence of words 
+a 	: 3 times
+this 	: 2 times
+
+Solution:Using python
+
+1)string = input("Enter string: ")
+  l = []
+  s = string.split()[::-1]
+  for i in s:
+    l.append(i)
+    a=" ".join(l)
+  a=a.capitalize()
+  print("\n%s\n"%a)
+
+
+2)str=input()
+word_counter = {}
+for word in str.split(" "):
+    if len(word) > 0 and word != '\r\n':
+        if word not in word_counter: 
+            word_counter[word] = 1
+        else:
+            word_counter[word] += 1 
+for i,word in enumerate(sorted(word_counter,key=word_counter.get,reverse=True)[:2]):
+    print ("%s : %s times"%(word,word_counter[word]))
+
+SQL assignment:
+
+ASSIGNMENT-01SQL 
+Develop a SQL query that will find out two Products for each product category that are most popular in last 30 days. Popularity is based on maximum quantity sold in a particular category.
+
+
+1)SELECT DISTINCT product_catalogue.Cat_Id,purchase__history.Product_Id,
+  RANK() OVER (ORDER BY SUM(purchase__history.Sale_Qty) DESC) Trending
+  FROM purchase__history
+  INNER JOIN product_catalogue 
+  ON purchase__history.Product_Id=product_catalogue.Product_Id 
+  GROUP BY product_catalogue.Cat_Id;
+
+ASSIGNMENT-02SQL 
+Develop a query that will assign one voucher to one customer and vice versa. Two customers will not get same voucher. Two Voucher will not be assigned to a single customer.
+
+
+2)CREATE TABLE Customer (Customer_Id varchar(255));
+ INSERT INTO Customer VALUES('Customer_Id'),('Abhinash'),('Vipin'),('Mahesh'),('Bijoy'),('Bhabani'),('Ashutosh');
+ CREATE TABLE Voucher (Voucher_Id varchar(255) UNIQUE);
+ INSERT INTO Voucher VALUES('ABXFH'),('SDFGH'),('ERTYY'),('PPLKM')
+ ;with cte 
+ as(select *,row_number() over(order by Customer_Id) r from Customer)
+ ,cte2 as(select *,row_number() over(order by Voucher_Id) r from Voucher)
+    
+ select Customer_Id Customer_Key,Voucher_Id Gift_Voucher_Key
+ from cte c1
+ left join cte2 c2 on c1.r=c2.r;
